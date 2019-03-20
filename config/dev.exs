@@ -54,3 +54,12 @@ config :bankchallenge, BankChallenge.Repo,
   database: "bankchallenge_dev",
   hostname: "localhost",
   pool_size: 10
+
+# Configuração de BD da EventStore
+config :eventstore, EventStore.Storage,
+  serializer: Commanded.Serialization.JsonSerializer,
+  username: "postgres",
+  password: "root",
+  database: "bankchallenge_eventstore_dev",
+  hostname: "localhost",
+  pool_size: 10
