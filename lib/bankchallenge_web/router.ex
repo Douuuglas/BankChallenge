@@ -8,6 +8,6 @@ defmodule BankChallengeWeb.Router do
   scope "/api", BankChallengeWeb do
     pipe_through :api
 
-    resource "/accounts", AccountController
+    resources "/accounts", AccountController
   end
 end

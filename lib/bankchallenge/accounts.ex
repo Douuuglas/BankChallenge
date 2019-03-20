@@ -4,9 +4,12 @@ defmodule BankChallenge.Accounts do
   """
 
   import Ecto.Query, warn: false
+  
   alias BankChallenge.Repo
-
   alias BankChallenge.Accounts.Account
+  alias BankChallenge.Accounts.Commands.OpenAccount
+  alias BankChallenge.Accounts.Routers.AccountRouter
+  alias BankChallenge.Accounts.Aggregates.AccountAggregate
 
   @doc """
   Returns the list of accounts.
@@ -35,7 +38,7 @@ defmodule BankChallenge.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_account!(id), do: Repo.get!(Account, id)
+  def get_account!(account_number), do: Repo.get!(Account, account_number)
 
   @doc """
   Creates a account.
@@ -50,9 +53,35 @@ defmodule BankChallenge.Accounts do
 
   """
   def create_account(attrs \\ %{}) do
-    %Account{}
-    |> Account.changeset(attrs)
-    |> Repo.insert()
+    changeset = Account.changeset(%Account{}, attrs)
+    
+    if changeset.valid? do
+      dispatch_result = %OpenAccount{
+        account_number: changeset.changes.account_number,
+        username: changeset.changes.username,
+        email: changeset.changes.email,
+        hashed_password: changeset.changes.hashed_password,
+        initial_balance: changeset.changes.balance
+      }
+      |> AccountRouter.dispatch()
+
+      case dispatch_result do
+        :ok ->
+          {
+            :ok,
+            %Account{
+              account_number: changeset.changes.account_number,
+              username: changeset.changes.username,
+              email: changeset.changes.email,
+              hashed_password: changeset.changes.hashed_password,
+              balance: changeset.changes.balance
+            }
+          }
+        reply -> reply
+      end
+    else
+      {:validation_error, changeset}
+    end
   end
 
   @doc """

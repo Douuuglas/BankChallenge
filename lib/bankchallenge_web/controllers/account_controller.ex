@@ -20,21 +20,21 @@ defmodule BankChallengeWeb.AccountController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    account = Accounts.get_account!(id)
+  def show(conn, %{"account_number" => account_number}) do
+    account = Accounts.get_account!(account_number)
     render(conn, "show.json", account: account)
   end
 
-  def update(conn, %{"id" => id, "account" => account_params}) do
-    account = Accounts.get_account!(id)
+  def update(conn, %{"account_number" => account_number, "account" => account_params}) do
+    account = Accounts.get_account!(account_number)
 
     with {:ok, %Account{} = account} <- Accounts.update_account(account, account_params) do
       render(conn, "show.json", account: account)
     end
   end
 
-  def delete(conn, %{"id" => id}) do
-    account = Accounts.get_account!(id)
+  def delete(conn, %{"account_number" => account_number}) do
+    account = Accounts.get_account!(account_number)
 
     with {:ok, %Account{}} <- Accounts.delete_account(account) do
       send_resp(conn, :no_content, "")

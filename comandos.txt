@@ -3,3 +3,4 @@ mix phx.new BankChallenge --module BankChallenge --app bankchallenge --no-webpac
 mix ecto.create
 mix event_store.create, event_store.init
 mix phx.gen.json Accounts Account accounts
+mix ecto.gen.migration create_projection_versions

@@ -20,7 +20,7 @@ defmodule BankChallenge.MixProject do
   def application do
     [
       mod: {BankChallenge.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :eventstore]
     ]
   end
 
@@ -42,7 +42,10 @@ defmodule BankChallenge.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:commanded, "~> 0.18"},
+      {:commanded_eventstore_adapter, "~> 0.5"},
       {:eventstore, "~> 0.16"},
+      {:uuid, "~> 1.1"},
+      {:commanded_ecto_projections, "~> 0.6"},
     ]
   end
 
