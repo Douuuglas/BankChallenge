@@ -1,0 +1,3 @@
+mix local.hex
+mix phx.new BankChallenge --module BankChallenge --app bankchallenge --no-webpack --no-html
+mix ecto.create
