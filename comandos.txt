@@ -1,3 +1,5 @@
 mix local.hex
 mix phx.new BankChallenge --module BankChallenge --app bankchallenge --no-webpack --no-html
 mix ecto.create
+mix event_store.create, event_store.init
+mix phx.gen.json Accounts Account accounts
