@@ -17,7 +17,7 @@ defmodule BankChallenge.Accounts.Account do
 
   @doc false
   def changeset(account, attrs) do
-    attrs = Map.merge(attrs, %{"account_number" => UUID.uuid4(), "balance" => 0})
+    attrs = Map.merge(attrs, %{"account_number" => UUID.uuid4(), "balance" => 1000})
 
     account
     |> cast(attrs, [:account_number, :username, :email, :hashed_password, :balance])

@@ -11,6 +11,12 @@ defmodule BankChallengeWeb.AccountView do
   end
 
   def render("account.json", %{account: account}) do
-    %{id: account.id}
+    %{
+      account_number: account.account_number,
+      username: account.username,
+      email: account.email,
+      hashed_password: account.hashed_password,
+      balance: account.balance,
+  }
   end
 end

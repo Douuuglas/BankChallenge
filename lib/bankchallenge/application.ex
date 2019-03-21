@@ -11,9 +11,10 @@ defmodule BankChallenge.Application do
       # Start the Ecto repository
       BankChallenge.Repo,
       # Start the endpoint when the application starts
-      BankChallengeWeb.Endpoint
+      BankChallengeWeb.Endpoint,
       # Starts a worker by calling: BankChallenge.Worker.start_link(arg)
       # {BankChallenge.Worker, arg},
+      BankChallenge.Accounts.AccountSupervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

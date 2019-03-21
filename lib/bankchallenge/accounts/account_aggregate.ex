@@ -20,7 +20,7 @@ defmodule BankChallenge.Accounts.Aggregates.AccountAggregate do
       username: open_account.username,
       email: open_account.email,
       hashed_password: open_account.hashed_password,
-      initial_balance: 1000
+      initial_balance: open_account.initial_balance
     }
   end
 
