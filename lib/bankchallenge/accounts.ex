@@ -9,8 +9,7 @@ defmodule BankChallenge.Accounts do
   alias BankChallenge.Accounts.Account
   alias BankChallenge.Accounts.Commands.OpenAccount
   alias BankChallenge.Accounts.Routers.AccountRouter
-  alias BankChallenge.Accounts.Aggregates.AccountAggregate
-
+  
   @doc """
   Returns the list of accounts.
 

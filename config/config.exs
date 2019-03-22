@@ -31,7 +31,8 @@ config :commanded,
   event_store_adapter: Commanded.EventStore.Adapters.EventStore
 
 # Configurar ecto
-config :commanded_ecto_projections, repo: BankChallenge.Repo
+config :commanded_ecto_projections,
+  repo: BankChallenge.Repo
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

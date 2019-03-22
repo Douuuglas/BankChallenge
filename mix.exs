@@ -59,7 +59,9 @@ defmodule BankChallenge.MixProject do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      BankChallengeReset: ["ecto.drop", "ecto.create", "ecto.migrate", "event_store.drop", "event_store.create", "event_store.init", "phx.server"]
     ]
+
   end
 end

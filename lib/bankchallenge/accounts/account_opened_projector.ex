@@ -1,6 +1,6 @@
 defmodule BankChallenge.Accounts.Projectors.AccountOpenedProjector do
   use Commanded.Projections.Ecto,
-    name: "Accounts.Projectors.AccountOpened"
+    name: "Accounts.Projectors.AccountOpenedProjector"
 
   alias BankChallenge.Accounts.Events.AccountOpened
   alias BankChallenge.Accounts.Projectors.AccountProjector
@@ -11,7 +11,7 @@ defmodule BankChallenge.Accounts.Projectors.AccountOpenedProjector do
       username: evt.username,
       email: evt.email,
       hashed_password: evt.hashed_password,
-      balance: evt.balance
+      balance: Decimal.new(evt.initial_balance)
     })
   end)
 end
