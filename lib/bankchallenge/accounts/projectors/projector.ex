@@ -3,7 +3,7 @@ defmodule BankChallenge.Accounts.Projector do
     name: "AccountProjector"
 
   alias BankChallenge.Accounts.Events, as: E
-  alias BankChallenge.Accounts.Schema, as: S
+  alias BankChallenge.Accounts.Schemas, as: S
   
   project(%E.AccountOpened{} = evt, _metadata, fn multi ->
     Ecto.Multi.insert(multi, :account_projector, %S.Account{
@@ -17,7 +17,7 @@ defmodule BankChallenge.Accounts.Projector do
 
   project(%E.FundsAdded{} = evt, _metadada, fn multi ->
     Ecto.Multi.insert(multi, :account_projector, %S.Account{
-      balance: evt.amount
+      balance: Decimal.new(evt.amount)
     })
   end)
 end

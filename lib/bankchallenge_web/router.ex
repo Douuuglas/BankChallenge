@@ -10,7 +10,12 @@ defmodule BankChallengeWeb.Router do
 
     get "/accounts", AccountController, :index
     get "/accounts/:account_number", AccountController, :show
+
     post "/accounts", AccountController, :create
+    post "/accounts/add_funds", AccountController, :add_funds
+    post "/accounts/remove_funds", AccountController, :remove_funds
+    post "/accounts/transfer_funds", AccountController, :transfer_funds
+
     delete "/accounts/:account_number", AccountController, :delete
   end
 end

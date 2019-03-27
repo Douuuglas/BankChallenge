@@ -2,7 +2,7 @@ defmodule BankChallengeWeb.AccountController do
   use BankChallengeWeb, :controller
 
   alias BankChallenge.Accounts
-  alias BankChallenge.Accounts.Schema, as: S
+  alias BankChallenge.Accounts.Schemas, as: S
 
   action_fallback BankChallengeWeb.FallbackController
 
@@ -30,6 +30,33 @@ defmodule BankChallengeWeb.AccountController do
 
     with {:ok, %S.Account{}} <- Accounts.delete_account(account) do
       send_resp(conn, :no_content, "")
+    end
+  end
+
+  def add_funds(conn, %{"add_funds" => add_funds}) do
+    with {:ok, %S.Transaction{} = add_funds} <- Accounts.add_funds(add_funds) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", Routes.account_path(conn, :show, add_funds))
+      |> render("show.json", add_funds: add_funds)
+    end
+  end
+
+  def remove_funds(conn, %{"remove_funds" => remove_funds}) do
+    with {:ok, %S.Transaction{} = remove_funds} <- Accounts.remove_funds(remove_funds) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", Routes.account_path(conn, :show, remove_funds))
+      |> render("show.json", remove_funds: remove_funds)
+    end
+  end
+
+  def transfer_funds(conn, %{"transfer_funds" => transfer_funds}) do
+    with {:ok, %S.Transaction{} = transfer_funds} <- Accounts.transfer_funds(transfer_funds) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", Routes.account_path(conn, :show, transfer_funds))
+      |> render("show.json", transfer_funds: transfer_funds)
     end
   end
 end

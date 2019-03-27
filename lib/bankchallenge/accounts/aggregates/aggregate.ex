@@ -24,10 +24,6 @@ defmodule BankChallenge.Accounts.Aggregates.Account do
     }
   end
 
-  def execute(%{balance: b}, %C.RemoveFunds{amount: a}) when a > b do
-    {:error, :no_funds}    
-  end
-
   def execute(_, %C.AddFunds{} = add_funds) do
     %E.FundsAdded{
       account_number: add_funds.account_number,
@@ -35,6 +31,10 @@ defmodule BankChallenge.Accounts.Aggregates.Account do
     }
   end
 
+  def execute(%{balance: b}, %C.RemoveFunds{amount: a}) when a > b do
+    {:error, :no_funds}    
+  end
+  
   def execute(_, %C.RemoveFunds{} = remove_funds) do
     %E.FundsRemoved{
       account_number: remove_funds.account_number,

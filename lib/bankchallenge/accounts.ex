@@ -6,7 +6,7 @@ defmodule BankChallenge.Accounts do
   import Ecto.Query, warn: false
   
   alias BankChallenge.Repo
-  alias BankChallenge.Accounts.Schema, as: S
+  alias BankChallenge.Accounts.Schemas, as: S
   alias BankChallenge.Accounts.Commands, as: C
   alias BankChallenge.Accounts.Routers, as: R
   
@@ -83,58 +83,51 @@ defmodule BankChallenge.Accounts do
     end
   end
 
-  def transfer_funds(from_account_number, to_account_number, amount) do
+  def transfer_funds(%S.Transaction{} = transfer_funds) do
     %C.TransferFunds{
-      from_account_number: from_account_number,
-      to_account_number: to_account_number,
-      amount: amount
+      account_number: transfer_funds.account_number,
+      to_account_number: transfer_funds.to_account_number,
+      amount: transfer_funds.amount
     }
     |> R.Account.dispatch
   end
 
-  def remove_funds(account_number, amount) do
+  def remove_funds(%S.Transaction{} = remove_funds) do
     %C.RemoveFunds{
-      account_number: account_number,
-      amount: amount
+      account_number: remove_funds.account_number,
+      amount: remove_funds.amount
     }
     |> R.Account.dispatch
   end
 
-  def add_funds(account_number, amount) do
-    %C.AddFunds{
-      account_number: account_number,
-      amount: amount
-    }
-    |> R.Account.dispatch
-  end
-
-  def get_balance(account_number) do
-    case Repo.get(Account, account_number) do
-      nil ->
-        {:error, :not_found}
-      account ->
-        {:ok, account.balance}
+  def add_funds(attrs \\ %{}) do
+    attrs = Map.merge(attrs, %{"name" => "AddFunds"})
+    changeset = S.Transaction.changeset(%S.Transaction{}, attrs)
+    
+    if changeset.valid? do
+      dispatch_result = %C.AddFunds{
+        transaction_number: changeset.changes.transaction_number,
+        account_number: changeset.changes.account_number,
+        amount: changeset.changes.amount
+      }
+      |> R.Account.dispatch
+    case dispatch_result do
+        :ok ->
+          {
+            :ok,
+            %S.Transaction{
+              transaction_number: changeset.changes.transaction_number,
+              account_number: changeset.changes.account_number,
+              amount: changeset.changes.amount
+            }
+          }
+        reply -> reply
+      end
+    else
+      {:validation_error, changeset}
     end
   end
-
-  @doc """
-  Updates a account.
-
-  ## Examples
-
-      iex> update_account(account, %{field: new_value})
-      {:ok, %Account{}}
-
-      iex> update_account(account, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_account(%S.Account{} = account, attrs) do
-    account
-    |> S.Account.changeset(attrs)
-    |> Repo.update()
-  end
-
+ 
   @doc """
   Deletes a Account.
 
@@ -149,18 +142,5 @@ defmodule BankChallenge.Accounts do
   """
   def delete_account(%S.Account{} = account) do
     Repo.delete(account)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking account changes.
-
-  ## Examples
-
-      iex> change_account(account)
-      %Ecto.Changeset{source: %Account{}}
-
-  """
-  def change_account(%S.Account{} = account) do
-    S.Account.changeset(account, %{})
   end
 end

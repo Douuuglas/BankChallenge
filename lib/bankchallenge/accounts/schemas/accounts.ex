@@ -1,8 +1,8 @@
-defmodule BankChallenge.Accounts.Schema.Account do
+defmodule BankChallenge.Accounts.Schemas.Account do
   use Ecto.Schema
-  
   import Ecto.Changeset
-  
+  alias BankChallenge.Accounts.Schemas, as: S
+
   @primary_key {:account_number, :binary_id, autogenerate: false}
   @derive {Phoenix.Param, key: :account_number}
 
@@ -11,6 +11,8 @@ defmodule BankChallenge.Accounts.Schema.Account do
     field :email, :string
     field :hashed_password, :string
     field :balance, :decimal
+    has_many :account_number_transaction, S.Transaction, foreign_key: :account_number
+    has_many :from_account_number_transaction, S.Transaction, foreign_key: :from_account_number
 
     timestamps()
   end
