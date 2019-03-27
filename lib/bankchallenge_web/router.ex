@@ -11,7 +11,6 @@ defmodule BankChallengeWeb.Router do
     get "/accounts", AccountController, :index
     get "/accounts/:account_number", AccountController, :show
     post "/accounts", AccountController, :create
-    put "/accounts/:account_number", AccountController, :update
     delete "/accounts/:account_number", AccountController, :delete
   end
 end

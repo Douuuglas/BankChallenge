@@ -1,4 +1,4 @@
-defmodule BankChallenge.Accounts.Account do
+defmodule BankChallenge.Accounts.Schema.Account do
   use Ecto.Schema
   
   import Ecto.Changeset

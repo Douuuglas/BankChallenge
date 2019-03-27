@@ -5,6 +5,6 @@ defmodule BankChallenge.Accounts.Events.AccountOpened do
     :username,
     :email,
     :hashed_password,
-    :initial_balance
+    :balance
   ]
 end
