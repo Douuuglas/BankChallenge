@@ -11,13 +11,16 @@ defmodule BankChallenge.Accounts.Projector do
       username: evt.username,
       email: evt.email,
       hashed_password: evt.hashed_password,
-      balance: Decimal.new(evt.balance)
+      balance: evt.balance
     })
   end)
 
-  project(%E.FundsAdded{} = evt, _metadada, fn multi ->
-    Ecto.Multi.insert(multi, :account_projector, %S.Account{
-      balance: Decimal.new(evt.amount)
-    })
+  project(%E.FundsAdded{} = evt, _metadada, fn _ ->
+    Ecto.Multi.new
+      |> Ecto.Multi.insert(:account_projector, %S.Transaction{
+        transaction_number: evt.transaction_number,
+        account_number: evt.account_number,
+        name: "FundsAdded",
+        amount: evt.amount})
   end)
 end

@@ -26,6 +26,7 @@ defmodule BankChallenge.Accounts.Aggregates.Account do
 
   def execute(_, %C.AddFunds{} = add_funds) do
     %E.FundsAdded{
+      transaction_number: add_funds.transaction_number,
       account_number: add_funds.account_number,
       amount: add_funds.amount
     }

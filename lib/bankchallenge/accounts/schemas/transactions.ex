@@ -9,7 +9,7 @@ defmodule BankChallenge.Accounts.Schemas.Transaction do
 
   schema "transactions" do
     field :name, :string
-    field :amount, :decimal
+    field :amount, :integer
     field :account_number, :binary_id
     field :from_account_number, :binary_id
     has_one :account_number_account, {"accounts", S.Account}, foreign_key: :account_number

@@ -7,7 +7,7 @@ defmodule BankChallenge.Repo.Migrations.CreateAccounts do
       add :username, :string
       add :email, :string
       add :hashed_password, :string
-      add :balance, :decimal
+      add :balance, :integer
       
       timestamps()
     end
