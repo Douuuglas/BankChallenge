@@ -38,6 +38,7 @@ defmodule BankChallenge.Accounts.Aggregates.Account do
   
   def execute(_, %C.RemoveFunds{} = remove_funds) do
     %E.FundsRemoved{
+      transaction_number: remove_funds.transaction_number,
       account_number: remove_funds.account_number,
       amount: remove_funds.amount
     }

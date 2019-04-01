@@ -6,7 +6,7 @@ defmodule BankChallenge.Repo.Migrations.CreateTransactions do
       add :transaction_number, :uuid, primary_key: true
       add :name, :string
       add :account_number, references(:accounts, column: :account_number, type: :uuid)
-      add :from_account_number, references(:accounts, column: :account_number, type: :uuid), null: true
+      add :to_account_number, references(:accounts, column: :account_number, type: :uuid), null: true
       add :amount, :integer
       
       timestamps()

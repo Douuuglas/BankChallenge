@@ -38,7 +38,7 @@ defmodule BankChallengeWeb.AccountController do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.account_path(conn, :show, add_funds))
-      |> render("show.json", add_funds: add_funds)
+      |> render("transaction.show.json", transaction: add_funds)
     end
   end
 
@@ -47,7 +47,7 @@ defmodule BankChallengeWeb.AccountController do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.account_path(conn, :show, remove_funds))
-      |> render("show.json", remove_funds: remove_funds)
+      |> render("transaction.show.json", transaction: remove_funds)
     end
   end
 
@@ -56,7 +56,7 @@ defmodule BankChallengeWeb.AccountController do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.account_path(conn, :show, transfer_funds))
-      |> render("show.json", transfer_funds: transfer_funds)
+      |> render("transaction.show.json", transaction: transfer_funds)
     end
   end
 end

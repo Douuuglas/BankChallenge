@@ -52,6 +52,7 @@ defmodule BankChallenge.Accounts do
 
   """
   def create_account(attrs \\ %{}) do
+    attrs = Map.merge(attrs, %{"account_number" => UUID.uuid4(), "balance" => 1000})
     changeset = S.Account.changeset(%S.Account{}, attrs)
     
     if changeset.valid? do
@@ -83,25 +84,66 @@ defmodule BankChallenge.Accounts do
     end
   end
 
-  def transfer_funds(%S.Transaction{} = transfer_funds) do
-    %C.TransferFunds{
-      account_number: transfer_funds.account_number,
-      to_account_number: transfer_funds.to_account_number,
-      amount: transfer_funds.amount
-    }
-    |> R.Account.dispatch
+  def transfer_funds(attrs \\ %{}) do
+    attrs = Map.merge(attrs, %{"transaction_number" => UUID.uuid4(), "name" => "TransferFunds"})
+    changeset = S.Transaction.changeset_transfer(%S.Transaction{}, attrs)
+    
+    if changeset.valid? do
+      dispatch_result = %C.AddFunds{
+        transaction_number: changeset.changes.transaction_number,
+        account_number: changeset.changes.account_number,
+        amount: changeset.changes.amount
+      }
+      |> R.Account.dispatch
+      
+      case dispatch_result do
+        :ok ->
+          {
+            :ok,
+            %S.Transaction{
+              transaction_number: changeset.changes.transaction_number,
+              account_number: changeset.changes.account_number,
+              amount: changeset.changes.amount
+            }
+          }
+        reply -> reply
+      end
+    else
+      {:validation_error, changeset}
+    end
   end
 
-  def remove_funds(%S.Transaction{} = remove_funds) do
-    %C.RemoveFunds{
-      account_number: remove_funds.account_number,
-      amount: remove_funds.amount
-    }
-    |> R.Account.dispatch
+  def remove_funds(attrs \\ %{}) do
+    attrs = Map.merge(attrs, %{"transaction_number" => UUID.uuid4(), "name" => "RemoveFunds"})
+    changeset = S.Transaction.changeset(%S.Transaction{}, attrs)
+
+    if changeset.valid? do
+      dispatch_result = %C.RemoveFunds{
+        transaction_number: changeset.changes.transaction_number,
+        account_number: changeset.changes.account_number,
+        amount: changeset.changes.amount
+      }
+      |> R.Account.dispatch
+
+      case dispatch_result do
+        :ok ->
+          {
+            :ok,
+            %S.Transaction{
+              transaction_number: changeset.changes.transaction_number,
+              account_number: changeset.changes.account_number,
+              amount: changeset.changes.amount
+            }
+          }
+        reply -> reply
+      end
+    else
+      {:validation_error, changeset}
+    end
   end
 
   def add_funds(attrs \\ %{}) do
-    attrs = Map.merge(attrs, %{"name" => "AddFunds"})
+    attrs = Map.merge(attrs, %{"transaction_number" => UUID.uuid4(), "name" => "AddFunds"})
     changeset = S.Transaction.changeset(%S.Transaction{}, attrs)
     
     if changeset.valid? do

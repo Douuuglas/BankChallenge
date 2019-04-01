@@ -19,4 +19,18 @@ defmodule BankChallengeWeb.AccountView do
       balance: account.balance,
   }
   end
+
+  def render("transaction.show.json", %{transaction: transaction}) do
+    %{data: render_one(transaction, AccountView, "transaction.json")}
+  end
+
+  def render("transaction.json", %{transaction: transaction}) do
+    %{
+      transaction_number: transaction.transaction_number,
+      name: transaction.name,
+      account_number: transaction.account_number,
+      to_account_number: transaction.to_account_number,
+      amount: transaction.amount,
+  }
+  end
 end
