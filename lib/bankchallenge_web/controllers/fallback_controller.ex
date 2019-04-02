@@ -19,4 +19,19 @@ defmodule BankChallengeWeb.FallbackController do
     |> put_view(BankChallengeWeb.ErrorView)
     |> render(:"404")
   end
+
+  def call(conn, {:error, :no_funds}) do
+    conn
+    |> send_resp(400, "no funds")
+  end
+
+  def call(conn, {:error, :no_transfer_same_account}) do
+    conn
+    |> send_resp(400, "no transfer same account")
+  end
+
+  def call(conn, {:error, :account_not_found}) do
+    conn
+    |> send_resp(400, "account not found")
+  end
 end

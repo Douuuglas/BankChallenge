@@ -24,6 +24,10 @@ defmodule BankChallenge.Accounts.Aggregates.Account do
     }
   end
 
+  def execute(%Account{account_number: nil}, %C.AddFunds{}) do
+    {:error, :account_not_found}
+  end
+
   def execute(_, %C.AddFunds{} = add_funds) do
     %E.FundsAdded{
       transaction_number: add_funds.transaction_number,
@@ -32,8 +36,12 @@ defmodule BankChallenge.Accounts.Aggregates.Account do
     }
   end
 
+  def execute(%Account{account_number: nil}, %C.RemoveFunds{}) do
+    {:error, :account_not_found}
+  end
+
   def execute(%{balance: b}, %C.RemoveFunds{amount: a}) when a > b do
-    {:error, :no_funds}    
+    {:error, :no_funds}
   end
   
   def execute(_, %C.RemoveFunds{} = remove_funds) do
@@ -41,6 +49,27 @@ defmodule BankChallenge.Accounts.Aggregates.Account do
       transaction_number: remove_funds.transaction_number,
       account_number: remove_funds.account_number,
       amount: remove_funds.amount
+    }
+  end
+
+  def execute(%{account_number: a}, %C.TransferFunds{to_account_number: ta}) when a === ta do
+    {:error, :no_transfer_same_account}
+  end
+  
+  def execute(%Account{account_number: nil}, %C.TransferFunds{}) do
+    {:error, :account_not_found}
+  end
+
+  def execute(%{balance: b}, %C.TransferFunds{amount: a}) when a > b do
+    {:error, :no_funds}    
+  end
+  
+  def execute(_, %C.TransferFunds{} = transfer_funds) do
+    %E.FundsTransfered{
+      transaction_number: transfer_funds.transaction_number,
+      account_number: transfer_funds.account_number,
+      to_account_number: transfer_funds.to_account_number,
+      amount: transfer_funds.amount
     }
   end
 
@@ -62,6 +91,12 @@ defmodule BankChallenge.Accounts.Aggregates.Account do
       hashed_password: opened_account.hashed_password,
       balance: opened_account.balance
     }
+  end
+
+  def apply(s, %E.FundsTransfered{} = evt) do
+    IO.inspect(s)
+
+    remove_funds(s, evt.amount)
   end
 
   def apply(s, %E.FundsAdded{} = evt) do

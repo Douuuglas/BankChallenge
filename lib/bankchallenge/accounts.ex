@@ -80,7 +80,7 @@ defmodule BankChallenge.Accounts do
         reply -> reply
       end
     else
-      {:validation_error, changeset}
+      {:error, changeset}
     end
   end
 
@@ -89,9 +89,10 @@ defmodule BankChallenge.Accounts do
     changeset = S.Transaction.changeset_transfer(%S.Transaction{}, attrs)
     
     if changeset.valid? do
-      dispatch_result = %C.AddFunds{
+      dispatch_result = %C.TransferFunds{
         transaction_number: changeset.changes.transaction_number,
         account_number: changeset.changes.account_number,
+        to_account_number: changeset.changes.to_account_number,
         amount: changeset.changes.amount
       }
       |> R.Account.dispatch
@@ -109,7 +110,7 @@ defmodule BankChallenge.Accounts do
         reply -> reply
       end
     else
-      {:validation_error, changeset}
+      {:error, changeset}
     end
   end
 
@@ -138,7 +139,7 @@ defmodule BankChallenge.Accounts do
         reply -> reply
       end
     else
-      {:validation_error, changeset}
+      {:error, changeset}
     end
   end
 
@@ -166,23 +167,7 @@ defmodule BankChallenge.Accounts do
         reply -> reply
       end
     else
-      {:validation_error, changeset}
+      {:error, changeset}
     end
-  end
- 
-  @doc """
-  Deletes a Account.
-
-  ## Examples
-
-      iex> delete_account(account)
-      {:ok, %Account{}}
-
-      iex> delete_account(account)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_account(%S.Account{} = account) do
-    Repo.delete(account)
   end
 end

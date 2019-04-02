@@ -8,7 +8,7 @@ defmodule BankChallenge.Accounts.Routers.Account do
     C.OpenAccount,
     C.AddFunds,
     C.RemoveFunds,
-    C.TransferFunds
+    C.TransferFunds,
     ],
     to: A.Account,
     identity: :account_number)

@@ -25,38 +25,27 @@ defmodule BankChallengeWeb.AccountController do
     render(conn, "show.json", account: account)
   end
 
-  def delete(conn, %{"account_number" => account_number}) do
-    account = Accounts.get_account!(account_number)
-
-    with {:ok, %S.Account{}} <- Accounts.delete_account(account) do
-      send_resp(conn, :no_content, "")
+  def add_funds(conn, %{"add_funds" => add_funds_params}) do
+    with {:ok, _} <- Accounts.add_funds(add_funds_params) do
+      conn
+      |> put_status(:created)
+      |> send_resp(201, "ok")
     end
   end
 
-  def add_funds(conn, %{"add_funds" => add_funds}) do
-    with {:ok, %S.Transaction{} = add_funds} <- Accounts.add_funds(add_funds) do
+  def remove_funds(conn, %{"remove_funds" => remove_funds_params}) do
+    with {:ok, _} <- Accounts.remove_funds(remove_funds_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.account_path(conn, :show, add_funds))
-      |> render("transaction.show.json", transaction: add_funds)
+      |> send_resp(201, "ok")
     end
   end
 
-  def remove_funds(conn, %{"remove_funds" => remove_funds}) do
-    with {:ok, %S.Transaction{} = remove_funds} <- Accounts.remove_funds(remove_funds) do
+  def transfer_funds(conn, %{"transfer_funds" => transfer_funds_params}) do
+    with {:ok, _} <- Accounts.transfer_funds(transfer_funds_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.account_path(conn, :show, remove_funds))
-      |> render("transaction.show.json", transaction: remove_funds)
-    end
-  end
-
-  def transfer_funds(conn, %{"transfer_funds" => transfer_funds}) do
-    with {:ok, %S.Transaction{} = transfer_funds} <- Accounts.transfer_funds(transfer_funds) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.account_path(conn, :show, transfer_funds))
-      |> render("transaction.show.json", transaction: transfer_funds)
+      |> send_resp(201, "ok")
     end
   end
 end
