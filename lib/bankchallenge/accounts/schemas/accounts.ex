@@ -2,6 +2,7 @@ defmodule BankChallenge.Accounts.Schemas.Account do
   use Ecto.Schema
   import Ecto.Changeset
   alias BankChallenge.Accounts.Schemas, as: S
+  alias Comeonin
 
   @primary_key {:account_number, :binary_id, autogenerate: false}
   @derive {Phoenix.Param, key: :account_number}
@@ -9,6 +10,7 @@ defmodule BankChallenge.Accounts.Schemas.Account do
   schema "accounts" do
     field :username, :string
     field :email, :string
+    field :password, :string, virtual: true
     field :hashed_password, :string
     field :balance, :integer
     has_many :account_number_transaction, S.Transaction, foreign_key: :account_number
@@ -20,7 +22,16 @@ defmodule BankChallenge.Accounts.Schemas.Account do
   @doc false
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:account_number, :username, :email, :hashed_password, :balance])
-    |> validate_required([:account_number, :username, :email, :hashed_password, :balance])
+    |> cast(attrs, [:account_number, :username, :email, :password, :balance])
+    |> validate_required([:account_number, :username, :email, :password, :balance])
+    |> validate_format(:email, ~r/@/)
+    |> unique_constraint(:username)
+    |> put_password_hash()
   end
+
+  defp put_password_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
+    change(changeset, hashed_password: Comeonin.Bcrypt.hashpwsalt(password))
+  end
+
+  defp put_password_hash(changeset), do: changeset
 end

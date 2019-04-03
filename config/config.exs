@@ -34,6 +34,11 @@ config :commanded,
 config :commanded_ecto_projections,
   repo: BankChallenge.Repo
 
+# Configurar guardian
+config :bankchallenge, BankChallenge.AccountManager.Guardian,
+  issuer: "bankchallenge",
+  secret_key: "6z8QDNlGXcuPirb18kQyQrkLpDm1tPV4mTNNtGPF2Oc8l7ugeUrO7/cCVjbX6WCa"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
