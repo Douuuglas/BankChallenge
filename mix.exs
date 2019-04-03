@@ -47,8 +47,7 @@ defmodule BankChallenge.MixProject do
       {:uuid, "~> 1.1"},
       {:commanded_ecto_projections, "~> 0.6"},
       {:guardian, "~> 1.2"},
-      {:comeonin, "~> 4.0"},
-      {:bcrypt_elixir, "~> 1.0"},
+      {:bcrypt_elixir, "~> 2.0"},
     ]
   end
 

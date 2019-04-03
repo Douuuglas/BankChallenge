@@ -1,16 +1,16 @@
 defmodule BankChallange.AccountManager do
-  alias Comeonin.Bcrypt
   alias BankChallenge.Repo
   alias BankChallenge.Accounts.Schemas, as: S
   alias BankChallenge.AccountManager.Guardian
+  alias Bcrypt
 
   def authenticate_user(username, password) do
     case Repo.get_by(S.Account, username: username) do
       nil ->
-        Bcrypt.dummy_checkpw()
+        Bcrypt.no_user_verify()
         {:error, :invalid_credentials}
       acc ->
-        if Bcrypt.checkpw(password, acc.hashed_password) do
+        if Bcrypt.verify_pass(password, acc.hashed_password) do
           Guardian.encode_and_sign(acc)
         else
           {:error, :invalid_credentials}

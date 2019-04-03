@@ -2,7 +2,6 @@ defmodule BankChallenge.Accounts.Schemas.Account do
   use Ecto.Schema
   import Ecto.Changeset
   alias BankChallenge.Accounts.Schemas, as: S
-  alias Comeonin
 
   @primary_key {:account_number, :binary_id, autogenerate: false}
   @derive {Phoenix.Param, key: :account_number}
@@ -30,7 +29,7 @@ defmodule BankChallenge.Accounts.Schemas.Account do
   end
 
   defp put_password_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
-    change(changeset, hashed_password: Comeonin.Bcrypt.hashpwsalt(password))
+    change(changeset, hashed_password: Bcrypt.hash_pwd_salt(password))
   end
 
   defp put_password_hash(changeset), do: changeset
