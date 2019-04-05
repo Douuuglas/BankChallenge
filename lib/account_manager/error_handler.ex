@@ -1,4 +1,4 @@
-defmodule BankChallange.AccountManager.ErrorHandler do
+defmodule BankChallenge.AccountManager.ErrorHandler do
   import Plug.Conn
 
   @behaviour Guardian.Plug.ErrorHandler

@@ -15,7 +15,6 @@ defmodule BankChallengeWeb.AccountView do
       account_number: account.account_number,
       username: account.username,
       email: account.email,
-      hashed_password: account.hashed_password,
       balance: account.balance,
   }
   end

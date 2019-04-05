@@ -24,7 +24,6 @@ defmodule BankChallenge.Accounts.Schemas.Account do
     |> cast(attrs, [:account_number, :username, :email, :password, :balance])
     |> validate_required([:account_number, :username, :email, :password, :balance])
     |> validate_format(:email, ~r/@/)
-    |> unique_constraint(:username)
     |> put_password_hash()
   end
 
