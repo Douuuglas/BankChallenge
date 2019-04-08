@@ -28,7 +28,8 @@ config :phoenix, :json_library, Jason
 
 # Configurar o commanded
 config :commanded,
-  event_store_adapter: Commanded.EventStore.Adapters.EventStore
+  event_store_adapter: Commanded.EventStore.Adapters.EventStore,
+  default_consistency: :strong
 
 # Configurar ecto
 config :commanded_ecto_projections,
