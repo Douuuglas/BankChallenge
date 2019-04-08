@@ -7,7 +7,7 @@ defmodule BankChallenge.Accounts.Schemas.Account do
   @derive {Phoenix.Param, key: :account_number}
 
   schema "accounts" do
-    field :username, :string
+    field :username, :string, unique: true
     field :email, :string
     field :password, :string, virtual: true
     field :hashed_password, :string
@@ -25,6 +25,14 @@ defmodule BankChallenge.Accounts.Schemas.Account do
     |> validate_required([:account_number, :username, :email, :password, :balance])
     |> validate_format(:email, ~r/@/)
     |> put_password_hash()
+  end
+
+  def insert_changeset(account, attrs) do
+    account
+    |> cast(attrs, [:account_number, :username, :email, :hashed_password, :balance])
+    |> validate_required([:account_number, :username, :email, :hashed_password, :balance])
+    |> validate_format(:email, ~r/@/)
+    |> unique_constraint(:username)
   end
 
   defp put_password_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do

@@ -11,5 +11,7 @@ defmodule BankChallenge.Repo.Migrations.CreateAccounts do
       
       timestamps()
     end
+
+    create unique_index(:accounts, [:username], name: :accounts_username_index)
   end
 end

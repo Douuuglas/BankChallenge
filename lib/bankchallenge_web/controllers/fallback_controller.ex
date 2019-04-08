@@ -34,4 +34,9 @@ defmodule BankChallengeWeb.FallbackController do
     conn
     |> send_resp(400, "account not found")
   end
+
+  def call(conn, {:error, :username_already_exists}) do
+    conn
+    |> send_resp(400, "username already exists")
+  end
 end

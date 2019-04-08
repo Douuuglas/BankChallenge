@@ -56,28 +56,24 @@ defmodule BankChallenge.Accounts do
     changeset = S.Account.changeset(%S.Account{}, attrs)
     
     if changeset.valid? do
-      dispatch_result = %C.OpenAccount{
-        account_number: changeset.changes.account_number,
-        username: changeset.changes.username,
-        email: changeset.changes.email,
-        hashed_password: changeset.changes.hashed_password,
-        balance: changeset.changes.balance
-      }
-      |> R.Account.dispatch()
-
-      case dispatch_result do
-        :ok ->
-          {
-            :ok,
-            %S.Account{
-              account_number: changeset.changes.account_number,
-              username: changeset.changes.username,
-              email: changeset.changes.email,
-              hashed_password: changeset.changes.hashed_password,
-              balance: changeset.changes.balance
-            }
-          }
-        reply -> reply
+      case Repo.get_by(S.Account, username: changeset.changes.username) do
+        nil ->
+          dispatch_result = %C.OpenAccount{
+            account_number: changeset.changes.account_number,
+            username: changeset.changes.username,
+            email: changeset.changes.email,
+            hashed_password: changeset.changes.hashed_password,
+            balance: changeset.changes.balance}
+          |> R.Account.dispatch()
+    
+          case dispatch_result do
+            :ok ->
+              {:ok, get_account!(changeset.changes.account_number)}
+            reply ->
+              reply
+          end
+        _ ->
+          {:error, :username_already_exists}
       end
     else
       {:error, changeset}
@@ -89,25 +85,23 @@ defmodule BankChallenge.Accounts do
     changeset = S.Transaction.changeset_transfer(%S.Transaction{}, attrs)
     
     if changeset.valid? do
-      dispatch_result = %C.TransferFunds{
-        transaction_number: changeset.changes.transaction_number,
-        account_number: changeset.changes.account_number,
-        to_account_number: changeset.changes.to_account_number,
-        amount: changeset.changes.amount
-      }
-      |> R.Account.dispatch
-      
-      case dispatch_result do
-        :ok ->
-          {
-            :ok,
-            %S.Transaction{
-              transaction_number: changeset.changes.transaction_number,
-              account_number: changeset.changes.account_number,
-              amount: changeset.changes.amount
-            }
-          }
-        reply -> reply
+      case Repo.get(S.Account, changeset.changes.to_account_number) do
+        nil ->
+          {:error, :to_account_doenst_exists}
+        _ ->
+          dispatch_result = %C.TransferFunds{
+            transaction_number: changeset.changes.transaction_number,
+            account_number: changeset.changes.account_number,
+            to_account_number: changeset.changes.to_account_number,
+            amount: changeset.changes.amount}
+          |> R.Account.dispatch
+          
+          case dispatch_result do
+            :ok ->
+              {:ok, get_account!(changeset.changes.account_number)}
+            reply ->
+              reply
+          end
       end
     else
       {:error, changeset}
@@ -122,21 +116,14 @@ defmodule BankChallenge.Accounts do
       dispatch_result = %C.RemoveFunds{
         transaction_number: changeset.changes.transaction_number,
         account_number: changeset.changes.account_number,
-        amount: changeset.changes.amount
-      }
+        amount: changeset.changes.amount}
       |> R.Account.dispatch
 
       case dispatch_result do
         :ok ->
-          {
-            :ok,
-            %S.Transaction{
-              transaction_number: changeset.changes.transaction_number,
-              account_number: changeset.changes.account_number,
-              amount: changeset.changes.amount
-            }
-          }
-        reply -> reply
+          {:ok, get_account!(changeset.changes.account_number)}
+        reply ->
+          reply
       end
     else
       {:error, changeset}
@@ -151,20 +138,14 @@ defmodule BankChallenge.Accounts do
       dispatch_result = %C.AddFunds{
         transaction_number: changeset.changes.transaction_number,
         account_number: changeset.changes.account_number,
-        amount: changeset.changes.amount
-      }
+        amount: changeset.changes.amount}
       |> R.Account.dispatch
-    case dispatch_result do
+      
+      case dispatch_result do
         :ok ->
-          {
-            :ok,
-            %S.Transaction{
-              transaction_number: changeset.changes.transaction_number,
-              account_number: changeset.changes.account_number,
-              amount: changeset.changes.amount
-            }
-          }
-        reply -> reply
+          {:ok, get_account!(changeset.changes.account_number)}
+        reply ->
+          reply
       end
     else
       {:error, changeset}

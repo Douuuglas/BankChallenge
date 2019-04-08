@@ -6,13 +6,14 @@ defmodule BankChallenge.Accounts.Projector do
   alias BankChallenge.Accounts.Schemas, as: S
   
   project(%E.AccountOpened{} = evt, _metadata, fn multi ->
-    Ecto.Multi.insert(multi, :account_opened, %S.Account{
+    account_changeset = S.Account.insert_changeset(%S.Account{}, %{
       account_number: evt.account_number,
       username: evt.username,
       email: evt.email,
       hashed_password: evt.hashed_password,
-      balance: evt.balance
-    })
+      balance: evt.balance})
+    
+    Ecto.Multi.insert(multi, :account_opened, account_changeset)
   end)
 
   project(%E.FundsAdded{} = evt, _metadada, fn _ ->
