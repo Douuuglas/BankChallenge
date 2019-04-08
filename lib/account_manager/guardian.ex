@@ -9,7 +9,7 @@ defmodule BankChallenge.AccountManager.Guardian do
   end
 
   def resource_from_claims(%{"sub" => account_number}) do
-    case Accounts.get_account!(account_number) do
+    case Accounts.get_account(account_number) do
       nil -> {:error, :account_not_found}
       acc -> {:ok, acc}
     end

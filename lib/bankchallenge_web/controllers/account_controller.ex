@@ -21,8 +21,12 @@ defmodule BankChallengeWeb.AccountController do
   end
 
   def show(conn, %{"account_number" => account_number}) do
-    account = Accounts.get_account!(account_number)
-    render(conn, "show.json", account: account)
+    case Accounts.get_account(account_number) do
+      {:ok, acc} ->
+        render(conn, "show.json", account: acc)
+      _ ->
+        {:error, :account_not_found}
+    end
   end
 
   def add_funds(conn, %{"add_funds" => add_funds_params}) do

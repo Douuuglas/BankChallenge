@@ -22,21 +22,25 @@ defmodule BankChallengeWeb.FallbackController do
 
   def call(conn, {:error, :no_funds}) do
     conn
+    |> put_resp_content_type("application/json")
     |> send_resp(400, "no funds")
   end
 
   def call(conn, {:error, :no_transfer_same_account}) do
     conn
+    |> put_resp_content_type("application/json")
     |> send_resp(400, "no transfer same account")
   end
 
   def call(conn, {:error, :account_not_found}) do
     conn
+    |> put_resp_content_type("application/json")
     |> send_resp(400, "account not found")
   end
 
   def call(conn, {:error, :username_already_exists}) do
     conn
+    |> put_resp_content_type("application/json")
     |> send_resp(400, "username already exists")
   end
 end

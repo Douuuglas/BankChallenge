@@ -39,6 +39,8 @@ defmodule BankChallenge.Accounts do
   """
   def get_account!(account_number), do: Repo.get!(S.Account, account_number)
 
+  def get_account(account_number), do: Repo.get(S.Account, account_number)
+
   @doc """
   Creates a account.
 
@@ -52,8 +54,7 @@ defmodule BankChallenge.Accounts do
 
   """
   def create_account(attrs \\ %{}) do
-    attrs = Map.merge(attrs, %{"account_number" => UUID.uuid4(), "balance" => 1000})
-    changeset = S.Account.changeset(%S.Account{}, attrs)
+    changeset = S.Account.create_account_changeset(%S.Account{}, attrs)
     
     if changeset.valid? do
       case Repo.get_by(S.Account, username: changeset.changes.username) do
@@ -81,8 +82,7 @@ defmodule BankChallenge.Accounts do
   end
 
   def transfer_funds(attrs \\ %{}) do
-    attrs = Map.merge(attrs, %{"transaction_number" => UUID.uuid4(), "name" => "TransferFunds"})
-    changeset = S.Transaction.changeset_transfer(%S.Transaction{}, attrs)
+    changeset = S.Transaction.transfer_funds_changeset(%S.Transaction{}, attrs)
     
     if changeset.valid? do
       case Repo.get(S.Account, changeset.changes.to_account_number) do
@@ -109,8 +109,7 @@ defmodule BankChallenge.Accounts do
   end
 
   def remove_funds(attrs \\ %{}) do
-    attrs = Map.merge(attrs, %{"transaction_number" => UUID.uuid4(), "name" => "RemoveFunds"})
-    changeset = S.Transaction.changeset(%S.Transaction{}, attrs)
+    changeset = S.Transaction.remove_funds_changeset(%S.Transaction{}, attrs)
 
     if changeset.valid? do
       dispatch_result = %C.RemoveFunds{
@@ -131,8 +130,7 @@ defmodule BankChallenge.Accounts do
   end
 
   def add_funds(attrs \\ %{}) do
-    attrs = Map.merge(attrs, %{"transaction_number" => UUID.uuid4(), "name" => "AddFunds"})
-    changeset = S.Transaction.changeset(%S.Transaction{}, attrs)
+    changeset = S.Transaction.add_funds_changeset(%S.Transaction{}, attrs)
     
     if changeset.valid? do
       dispatch_result = %C.AddFunds{

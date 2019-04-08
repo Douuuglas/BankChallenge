@@ -7,8 +7,9 @@ defmodule BankChallengeWeb.SessionController do
       {:ok, token, _claims} ->
         conn
         |> render("jwt.json", jwt: token)
-      _ ->
-        {:error, :unauthorized}
+      {:error, :invalid_credentials} ->
+        conn
+        |> render("invalid_credentials.json")
     end
   end
 end
