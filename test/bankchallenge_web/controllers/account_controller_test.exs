@@ -2,15 +2,18 @@ defmodule BankChallengeWeb.AccountControllerTest do
   use BankChallengeWeb.ConnCase
 
   alias BankChallenge.Accounts
-  alias BankChallenge.Accounts.Account
 
   @create_attrs %{
-
+    username: "aline",
+    email: "aline.guesser@gmail.com",
+    password: "senha"
   }
-  @update_attrs %{
 
+  @invalid_attrs %{
+    username: nil,
+    email: nil,
+    password: nil
   }
-  @invalid_attrs %{}
 
   def fixture(:account) do
     {:ok, account} = Accounts.create_account(@create_attrs)
@@ -22,22 +25,17 @@ defmodule BankChallengeWeb.AccountControllerTest do
   end
 
   describe "index" do
-    test "lists all accounts", %{conn: conn} do
+    test "lists all accounts without authentication", %{conn: conn} do
       conn = get(conn, Routes.account_path(conn, :index))
-      assert json_response(conn, 200)["data"] == []
+      assert json_response(conn, 401)["errors"] == "unauthenticated"
     end
   end
 
   describe "create account" do
     test "renders account when data is valid", %{conn: conn} do
       conn = post(conn, Routes.account_path(conn, :create), account: @create_attrs)
-      assert %{"id" => id} = json_response(conn, 201)["data"]
-
-      conn = get(conn, Routes.account_path(conn, :show, id))
-
-      assert %{
-               "id" => id
-             } = json_response(conn, 200)["data"]
+      
+      assert %{"account" => account} = json_response(conn, 201)
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -46,41 +44,34 @@ defmodule BankChallengeWeb.AccountControllerTest do
     end
   end
 
-  describe "update account" do
-    setup [:create_account]
-
-    test "renders account when data is valid", %{conn: conn, account: %Account{id: id} = account} do
-      conn = put(conn, Routes.account_path(conn, :update, account), account: @update_attrs)
-      assert %{"id" => ^id} = json_response(conn, 200)["data"]
-
-      conn = get(conn, Routes.account_path(conn, :show, id))
-
-      assert %{
-               "id" => id
-             } = json_response(conn, 200)["data"]
-    end
-
-    test "renders errors when data is invalid", %{conn: conn, account: account} do
-      conn = put(conn, Routes.account_path(conn, :update, account), account: @invalid_attrs)
-      assert json_response(conn, 422)["errors"] != %{}
-    end
-  end
-
-  describe "delete account" do
-    setup [:create_account]
-
-    test "deletes chosen account", %{conn: conn, account: account} do
-      conn = delete(conn, Routes.account_path(conn, :delete, account))
-      assert response(conn, 204)
-
-      assert_error_sent 404, fn ->
-        get(conn, Routes.account_path(conn, :show, account))
+  describe "account add funds" do
+    def add_funds(conn, %{"add_funds" => add_funds_params}) do
+      with {:ok, _} <- Accounts.add_funds(add_funds_params) do
+        conn
+        |> put_status(:created)
+        |> send_resp(201, "ok")
       end
     end
+    
+  end
+  
+  describe "account remove funds" do
+    def remove_funds(conn, %{"remove_funds" => remove_funds_params}) do
+      with {:ok, _} <- Accounts.remove_funds(remove_funds_params) do
+        conn
+        |> put_status(:created)
+        |> send_resp(201, "ok")
+      end
+    end    
   end
 
-  defp create_account(_) do
-    account = fixture(:account)
-    {:ok, account: account}
+  describe "account transfer funds" do
+    def transfer_funds(conn, %{"transfer_funds" => transfer_funds_params}) do
+      with {:ok, _} <- Accounts.transfer_funds(transfer_funds_params) do
+        conn
+        |> put_status(:created)
+        |> send_resp(201, "ok")
+      end
+    end
   end
 end

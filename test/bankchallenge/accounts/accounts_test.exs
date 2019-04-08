@@ -4,16 +4,24 @@ defmodule BankChallenge.AccountsTest do
   alias BankChallenge.Accounts
 
   describe "accounts" do
-    alias BankChallenge.Accounts.Account
+    alias BankChallenge.Accounts.Schemas, as: S
 
-    @valid_attrs %{}
-    @update_attrs %{}
-    @invalid_attrs %{}
+    @account_valid_attrs %{
+      username: "aline",
+      email: "aline.guesser@gmail.com",
+      password: "senha"
+    }
+
+    @account_invalid_attrs %{
+      username: nil,
+      email: nil,
+      password: nil
+    }
 
     def account_fixture(attrs \\ %{}) do
       {:ok, account} =
         attrs
-        |> Enum.into(@valid_attrs)
+        |> Enum.into(@account_valid_attrs)
         |> Accounts.create_account()
 
       account
@@ -26,37 +34,48 @@ defmodule BankChallenge.AccountsTest do
 
     test "get_account!/1 returns the account with given id" do
       account = account_fixture()
-      assert Accounts.get_account!(account.id) == account
+      assert Accounts.get_account!(account.account_number) == account
     end
 
     test "create_account/1 with valid data creates a account" do
-      assert {:ok, %Account{} = account} = Accounts.create_account(@valid_attrs)
+      assert {:ok, %S.Account{} = account} = Accounts.create_account(@account_valid_attrs)
     end
 
     test "create_account/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Accounts.create_account(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_account(@account_invalid_attrs)
     end
 
-    test "update_account/2 with valid data updates the account" do
+    # test "transfer_funds/1 returns an account with less funds" do
+    #   account = account_fixture()
+    #   transfer_funds = %{
+    #     account_number: account.account_number,
+    #     to_account_number: 
+    #     amount
+    #   }
+
+    #   assert %Ecto.Changeset{} = Accounts.change_account(account)
+    # end
+
+    test "remove_funds/1 return an account with less funds" do
       account = account_fixture()
-      assert {:ok, %Account{} = account} = Accounts.update_account(account, @update_attrs)
+      balanceBefore =  account.balance
+      remove_funds = %{
+        account_number: account.account_number,
+        amount: 10}
+
+      assert {:ok, acc} = Accounts.remove_funds(remove_funds)
+      assert acc.balance == balanceBefore - remove_funds.amount
     end
 
-    test "update_account/2 with invalid data returns error changeset" do
+    test "add_funds/1 return an account wirh more funds" do
       account = account_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_account(account, @invalid_attrs)
-      assert account == Accounts.get_account!(account.id)
-    end
+      balanceBefore =  account.balance
+      add_funds = %{
+        account_number: account.account_number,
+        amount: 10}
 
-    test "delete_account/1 deletes the account" do
-      account = account_fixture()
-      assert {:ok, %Account{}} = Accounts.delete_account(account)
-      assert_raise Ecto.NoResultsError, fn -> Accounts.get_account!(account.id) end
-    end
-
-    test "change_account/1 returns a account changeset" do
-      account = account_fixture()
-      assert %Ecto.Changeset{} = Accounts.change_account(account)
+      assert {:ok, acc} = Accounts.add_funds(add_funds)
+      assert acc.balance == balanceBefore + add_funds.amount
     end
   end
 end

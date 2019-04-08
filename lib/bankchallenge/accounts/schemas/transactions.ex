@@ -18,16 +18,28 @@ defmodule BankChallenge.Accounts.Schemas.Transaction do
   end
 
   @doc false
-  def changeset(transaction, attrs) do
+  def add_funds_changeset(transaction, attrs) do
     transaction
-    |> cast(attrs, [:transaction_number, :name, :account_number, :to_account_number, :amount])
-    |> validate_required([:transaction_number, :name, :account_number, :amount])
+    |> cast(attrs, [:account_number, :to_account_number, :amount])
+    |> validate_required([:account_number, :amount])
+    |> put_change(:transaction_number, UUID.uuid4())
+    |> put_change(:name, "AddFunds")
+  end
+
+  def remove_funds_changeset(transaction, attrs) do
+    transaction
+    |> cast(attrs, [:account_number, :to_account_number, :amount])
+    |> validate_required([:account_number, :amount])
+    |> put_change(:transaction_number, UUID.uuid4())
+    |> put_change(:name, "RemoveFunds")
   end
 
   @doc false
-  def changeset_transfer(transaction, attrs) do
+  def transfer_funds_changeset(transaction, attrs) do
     transaction
-    |> cast(attrs, [:transaction_number, :name, :account_number, :to_account_number, :amount])
-    |> validate_required([:transaction_number, :name, :account_number, :to_account_number, :amount])
+    |> cast(attrs, [:transaction_number, :account_number, :to_account_number, :amount])
+    |> validate_required([:transaction_number, :account_number, :to_account_number, :amount])
+    |> put_change(:transaction_number, UUID.uuid4())
+    |> put_change(:name, "TransferFunds")
   end
 end

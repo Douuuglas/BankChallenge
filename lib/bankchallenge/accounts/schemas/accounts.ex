@@ -19,14 +19,16 @@ defmodule BankChallenge.Accounts.Schemas.Account do
   end
 
   @doc false
-  def changeset(account, attrs) do
+  def create_account_changeset(account, attrs) do
     account
-    |> cast(attrs, [:account_number, :username, :email, :password, :balance])
-    |> validate_required([:account_number, :username, :email, :password, :balance])
+    |> cast(attrs, [:username, :email, :password])
+    |> validate_required([:username, :email, :password])
+    |> put_change(:account_number, UUID.uuid4())
+    |> put_change(:balance, 1000)
     |> validate_format(:email, ~r/@/)
     |> put_password_hash()
   end
-
+  
   def insert_changeset(account, attrs) do
     account
     |> cast(attrs, [:account_number, :username, :email, :hashed_password, :balance])

@@ -18,17 +18,17 @@ defmodule BankChallengeWeb.Router do
   scope "/api", BankChallengeWeb do
     pipe_through [:api, :auth]
 
-    post "/accounts", AccountController, :create
-    post "/accounts/login", SessionController, :login
+    post "/account", AccountController, :create
+    post "/account/login", SessionController, :login
   end
 
   scope "/api", BankChallengeWeb do
     pipe_through [:api, :auth, :ensure_auth]
 
+    get "/account/:account_number", AccountController, :show
+    post "/account/add_funds", AccountController, :add_funds
+    post "/account/remove_funds", AccountController, :remove_funds
+    post "/account/transfer_funds", AccountController, :transfer_funds
     get "/accounts", AccountController, :index
-    get "/accounts/:account_number", AccountController, :show
-    post "/accounts/add_funds", AccountController, :add_funds
-    post "/accounts/remove_funds", AccountController, :remove_funds
-    post "/accounts/transfer_funds", AccountController, :transfer_funds
   end
 end

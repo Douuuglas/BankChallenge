@@ -17,6 +17,11 @@ config :bankchallenge, BankChallenge.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
-# Configuração da EventStore para testes
-config :commanded, event_store_adapter: Commanded.EventStore.Adapters.InMemory
-config :commanded, Commanded.EventStore.Adapters.InMemory, serializer: Commanded.Serialization.JsonSerializer
+# Configuração de BD da EventStore
+config :eventstore, EventStore.Storage,
+  serializer: Commanded.Serialization.JsonSerializer,
+  username: "postgres",
+  password: "root",
+  database: "bankchallenge_eventstore_dev",
+  hostname: "localhost",
+  pool_size: 10
