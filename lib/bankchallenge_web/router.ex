@@ -9,6 +9,7 @@ defmodule BankChallengeWeb.Router do
   # We use ensure_auth to fail if there is no one logged in
   pipeline :ensure_auth do
     plug Guardian.Plug.EnsureAuthenticated
+    plug BankChallenge.AccountManager.CurrentAccount
   end
 
   pipeline :api do
@@ -25,7 +26,7 @@ defmodule BankChallengeWeb.Router do
   scope "/api", BankChallengeWeb do
     pipe_through [:api, :auth, :ensure_auth]
 
-    get "/account/:account_number", AccountController, :show
+    get "/account", AccountController, :show
     post "/account/add_funds", AccountController, :add_funds
     post "/account/remove_funds", AccountController, :remove_funds
     post "/account/transfer_funds", AccountController, :transfer_funds

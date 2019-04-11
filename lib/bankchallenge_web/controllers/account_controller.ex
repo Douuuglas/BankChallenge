@@ -12,44 +12,45 @@ defmodule BankChallengeWeb.AccountController do
   end
 
   def create(conn, %{"account" => account_params}) do
-    with {:ok, %S.Account{} = account} <- Accounts.create_account(account_params) do
+    with {:ok, %S.Account{} = acc} <- Accounts.create_account(account_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.account_path(conn, :show, account))
-      |> render("show.json", account: account)
+      |> render("show.json", account: acc)
     end
   end
 
-  def show(conn, %{"account_number" => account_number}) do
-    case Accounts.get_account(account_number) do
-      {:ok, acc} ->
-        render(conn, "show.json", account: acc)
-      _ ->
+  def show(conn, _params) do
+    case Accounts.get_account!(conn.assigns.current_account.account_number) do
+      nil ->
         {:error, :account_not_found}
+      acc ->
+        conn
+        |> put_status(:ok)
+        |> render("show.json", account: acc)
     end
   end
 
   def add_funds(conn, %{"add_funds" => add_funds_params}) do
-    with {:ok, _} <- Accounts.add_funds(add_funds_params) do
+    with {:ok, %S.Account{} = acc} <- Accounts.add_funds(add_funds_params) do
       conn
-      |> put_status(:created)
-      |> send_resp(201, "ok")
+      |> put_status(:ok)
+      |> render("show.json", account: acc)
     end
   end
 
   def remove_funds(conn, %{"remove_funds" => remove_funds_params}) do
-    with {:ok, _} <- Accounts.remove_funds(remove_funds_params) do
+    with {:ok, %S.Account{} = acc} <- Accounts.remove_funds(remove_funds_params) do
       conn
-      |> put_status(:created)
-      |> send_resp(201, "ok")
+      |> put_status(:ok)
+      |> render("show.json", account: acc)
     end
   end
 
   def transfer_funds(conn, %{"transfer_funds" => transfer_funds_params}) do
-    with {:ok, _} <- Accounts.transfer_funds(transfer_funds_params) do
+    with {:ok, %S.Account{} = acc} <- Accounts.transfer_funds(transfer_funds_params) do
       conn
-      |> put_status(:created)
-      |> send_resp(201, "ok")
+      |> put_status(:ok)
+      |> render("show.json", account: acc)
     end
   end
 end

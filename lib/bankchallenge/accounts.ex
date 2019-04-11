@@ -39,8 +39,6 @@ defmodule BankChallenge.Accounts do
   """
   def get_account!(account_number), do: Repo.get!(S.Account, account_number)
 
-  def get_account(account_number), do: Repo.get(S.Account, account_number)
-
   @doc """
   Creates a account.
 
