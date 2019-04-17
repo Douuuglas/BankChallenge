@@ -31,6 +31,7 @@ defmodule BankChallengeWeb.AccountController do
   end
 
   def add_funds(conn, %{"add_funds" => add_funds_params}) do
+    add_funds_params = Map.put(add_funds_params, "account_number", conn.assigns.current_account.account_number)
     with {:ok, %S.Account{} = acc} <- Accounts.add_funds(add_funds_params) do
       conn
       |> put_status(:ok)
@@ -39,6 +40,7 @@ defmodule BankChallengeWeb.AccountController do
   end
 
   def remove_funds(conn, %{"remove_funds" => remove_funds_params}) do
+    remove_funds_params = Map.put(remove_funds_params, "account_number", conn.assigns.current_account.account_number)
     with {:ok, %S.Account{} = acc} <- Accounts.remove_funds(remove_funds_params) do
       conn
       |> put_status(:ok)
@@ -47,6 +49,7 @@ defmodule BankChallengeWeb.AccountController do
   end
 
   def transfer_funds(conn, %{"transfer_funds" => transfer_funds_params}) do
+    transfer_funds_params = Map.put(transfer_funds_params, "account_number", conn.assigns.current_account.account_number)
     with {:ok, %S.Account{} = acc} <- Accounts.transfer_funds(transfer_funds_params) do
       conn
       |> put_status(:ok)
