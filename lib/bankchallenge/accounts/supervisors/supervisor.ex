@@ -7,9 +7,8 @@ defmodule BankChallenge.Accounts.AccountSupervisor do
 
   def init(_arg) do
     children = [
-      supervisor(BankChallenge.Accounts.Projector,
-      [],
-      id: :account_projector)
+      supervisor(BankChallenge.Accounts.Projector, [], id: :account_projector),
+      supervisor(BankChallenge.Accounts.RemovedFundsEventHandler, [])
     ]
 
     supervise(children, strategy: :one_for_one)
