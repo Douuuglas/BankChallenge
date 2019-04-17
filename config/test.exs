@@ -12,7 +12,7 @@ config :logger, level: :warn
 # Configure your database
 config :bankchallenge, BankChallenge.Repo,
   username: "postgres",
-  password: "root",
+  password: "postgres",
   database: "bankchallenge_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
@@ -21,7 +21,7 @@ config :bankchallenge, BankChallenge.Repo,
 config :eventstore, EventStore.Storage,
   serializer: Commanded.Serialization.JsonSerializer,
   username: "postgres",
-  password: "root",
+  password: "postgres",
   database: "bankchallenge_eventstore_dev",
   hostname: "localhost",
   pool_size: 10
