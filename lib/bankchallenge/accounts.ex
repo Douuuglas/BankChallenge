@@ -9,6 +9,7 @@ defmodule BankChallenge.Accounts do
   alias BankChallenge.Accounts.Schemas, as: S
   alias BankChallenge.Accounts.Commands, as: C
   alias BankChallenge.Accounts.Routers, as: R
+  alias BankChallenge.Accounts.Queries, as: Q
   
   @doc """
   Returns the list of accounts.
@@ -38,6 +39,12 @@ defmodule BankChallenge.Accounts do
 
   """
   def get_account!(account_number), do: Repo.get!(S.Account, account_number)
+
+  def get_email_by_account(account_number) do
+    account_number
+    |> Q.EmailByAccountNumber.new()
+    |> Repo.all()
+  end
 
   @doc """
   Creates a account.
