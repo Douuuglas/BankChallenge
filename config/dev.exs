@@ -50,7 +50,7 @@ config :phoenix, :plug_init_mode, :runtime
 # Configure your database
 config :bankchallenge, BankChallenge.Repo,
   username: "postgres",
-  password: "root",
+  password: "postgres",
   database: "bankchallenge_dev",
   hostname: "localhost",
   pool_size: 10
@@ -59,7 +59,7 @@ config :bankchallenge, BankChallenge.Repo,
 config :eventstore, EventStore.Storage,
   serializer: Commanded.Serialization.JsonSerializer,
   username: "postgres",
-  password: "root",
+  password: "postgres",
   database: "bankchallenge_eventstore_dev",
   hostname: "localhost",
   pool_size: 10
