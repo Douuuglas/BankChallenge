@@ -3,25 +3,30 @@ defmodule BankChallengeWeb.ReportController do
 
   action_fallback BankChallengeWeb.FallbackController
 
-  def index(conn, _params) do
-    all_events =
+  def index(conn, params) do
+    all_transactions =
       EventStore.stream_all_forward()
       |> Stream.filter(fn ev -> ev.data.account_number == conn.assigns.current_account.account_number end)
-      |> Stream.map(fn ev -> 
-          balance = Map.get(ev.data, :balance)
-          amount = Map.get(ev.data, :amount)
+      |> Stream.map(fn ev ->
+        amount = Map.get(ev.data, :amount, Map.get(ev.data, :balance))
 
-          if Map.get(ev.data, :balance) == nil do
-            %{balance: amount}
-          else
-            %{balance: balance}
-          end
-        end)
-      #|> Enum.reduce(fn x, acc -> x.balance + acc.balance} end)
-      #|> Map.values()
-      #|> Enum.sum()
+        %{data: NaiveDateTime.to_date(ev.created_at),
+        amount: amount,
+        type: String.replace(ev.event_type, "Elixir.BankChallenge.Accounts.Events.", "")}
+      end)
       |> Enum.to_list()
+      |> Enum.group_by(fn x -> x.data end,
+        fn ev -> 
+          %{amount: ev.amount,
+            type: ev.type}
+        end)
+      
+      report =
+      %{
+        balance: 0,
+        history: all_transactions
+      }
 
-    render(conn, "index.json", events: all_events)
+    render(conn, "index.json", account: report)
   end 
 end
