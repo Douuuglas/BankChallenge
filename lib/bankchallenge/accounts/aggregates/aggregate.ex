@@ -94,28 +94,20 @@ defmodule BankChallenge.Accounts.Aggregates.Account do
   end
 
   def apply(s, %E.FundsTransfered{} = evt) do
-    IO.inspect(s)
-
-    remove_funds(s, evt.amount)
+    sum_funds(s, evt.amount)
   end
 
   def apply(s, %E.FundsAdded{} = evt) do
-    add_funds(s, evt.amount)
+    sum_funds(s, evt.amount)
   end 
 
   def apply(s, %E.FundsRemoved{} = evt) do
-    remove_funds(s, evt.amount)
+    sum_funds(s, evt.amount)
   end 
 
-  defp add_funds(s, amount) do
+  defp sum_funds(s, amount) do
     %Account{s |
       balance: s.balance + amount
-    }
-  end
-
-  defp remove_funds(s, amount) do
-    %Account{s |
-      balance: s.balance - amount
     }
   end
 end

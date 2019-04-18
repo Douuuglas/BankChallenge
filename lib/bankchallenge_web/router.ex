@@ -26,10 +26,12 @@ defmodule BankChallengeWeb.Router do
   scope "/api", BankChallengeWeb do
     pipe_through [:api, :auth, :ensure_auth]
 
+    get "/accounts", AccountController, :index
     get "/account", AccountController, :show
+    get "/account/report", ReportController, :index
+
     post "/account/add_funds", AccountController, :add_funds
     post "/account/remove_funds", AccountController, :remove_funds
     post "/account/transfer_funds", AccountController, :transfer_funds
-    get "/accounts", AccountController, :index
   end
 end

@@ -18,11 +18,6 @@ defmodule BankChallenge.Accounts.Projector do
 
   project(%E.FundsAdded{} = evt, _metadada, fn _ ->
     Ecto.Multi.new
-      |> Ecto.Multi.insert(:funds_added, %S.Transaction{
-        transaction_number: evt.transaction_number,
-        account_number: evt.account_number,
-        name: "FundsAdded",
-        amount: evt.amount})
       |> Ecto.Multi.insert(:account_balance_increase, %S.Account{
         account_number: evt.account_number, balance: evt.amount},
         conflict_target: :account_number,
@@ -31,32 +26,21 @@ defmodule BankChallenge.Accounts.Projector do
 
   project(%E.FundsRemoved{} = evt, _metadada, fn _ ->
     Ecto.Multi.new
-      |> Ecto.Multi.insert(:funds_removed, %S.Transaction{
-        transaction_number: evt.transaction_number,
-        account_number: evt.account_number,
-        name: "FundsRemoved",
-        amount: evt.amount})
       |> Ecto.Multi.insert(:account_balance_decrease, %S.Account{
         account_number: evt.account_number, balance: evt.amount},
         conflict_target: :account_number,
-        on_conflict: [inc: [balance: -evt.amount]])
+        on_conflict: [inc: [balance: evt.amount]])
   end)
 
   project(%E.FundsTransfered{} = evt, _metadada, fn _ ->
     Ecto.Multi.new
-      |> Ecto.Multi.insert(:funds_transfered, %S.Transaction{
-        transaction_number: evt.transaction_number,
-        account_number: evt.account_number,
-        to_account_number: evt.to_account_number,
-        name: "FundsTransfered",
-        amount: evt.amount})
       |> Ecto.Multi.insert(:funds_transfered_decrease, %S.Account{
         account_number: evt.account_number, balance: evt.amount},
         conflict_target: :account_number,
-        on_conflict: [inc: [balance: -evt.amount]])
+        on_conflict: [inc: [balance: evt.amount]])
       |> Ecto.Multi.insert(:funds_transfered_increase, %S.Account{
         account_number: evt.to_account_number, balance: evt.amount},
         conflict_target: :account_number,
-        on_conflict: [inc: [balance: evt.amount]])
+        on_conflict: [inc: [balance: -evt.amount]])
   end)
 end
