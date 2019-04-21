@@ -3,7 +3,7 @@ defmodule BankChallengeWeb.ReportController do
 
   action_fallback BankChallengeWeb.FallbackController
 
-  def index(conn, params) do
+  def index(conn, _params) do
     all_transactions =
       EventStore.stream_all_forward()
       |> Stream.filter(fn ev -> ev.data.account_number == conn.assigns.current_account.account_number end)

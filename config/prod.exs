@@ -10,9 +10,8 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :bankchallenge, BankChallengeWeb.Endpoint,
-  http: [:inet6, port: System.get_env("PORT") || 4000],
-  url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  http: [:inet6, port: 4000],
+  url: [host: "example.com", port: 80]
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -66,6 +65,21 @@ config :logger, level: :info
 # Note you can't rely on `System.get_env/1` when using releases.
 # See the releases documentation accordingly.
 
-# Finally import the config/prod.secret.exs which should be versioned
-# separately.
-import_config "prod.secret.exs"
+# Configure your database
+config :bankchallenge, BankChallenge.Repo,
+  username: System.get_env("PGUSER"),
+  password: System.get_env("PGPASSWORD"),
+  database: System.get_env("PGDATABASE"),
+  hostname: System.get_env("PGHOST"),
+  port: System.get_env("PGPORT"),
+  pool_size: 10
+
+# Configuração de BD da EventStore
+config :eventstore, EventStore.Storage,
+  serializer: Commanded.Serialization.JsonSerializer,
+  username: System.get_env("PGUSER"),
+  password: System.get_env("PGPASSWORD"),
+  database: System.get_env("PGDATABASE_ES"),
+  hostname: System.get_env("PGHOST"),
+  port: System.get_env("PGPORT"),
+  pool_size: 10
