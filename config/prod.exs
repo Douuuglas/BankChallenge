@@ -67,19 +67,19 @@ config :logger, level: :info
 
 # Configure your database
 config :bankchallenge, BankChallenge.Repo,
-  username: System.get_env("PGUSER"),
-  password: System.get_env("PGPASSWORD"),
-  database: System.get_env("PGDATABASE"),
-  hostname: System.get_env("PGHOST"),
-  port: System.get_env("PGPORT"),
+  username: "postgres",
+  password: "postgres",
+  database: "bankchallenge",
+  hostname: "db",
+  port: 5432,
   pool_size: 10
 
 # Configuração de BD da EventStore
 config :eventstore, EventStore.Storage,
   serializer: Commanded.Serialization.JsonSerializer,
-  username: System.get_env("PGUSER"),
-  password: System.get_env("PGPASSWORD"),
-  database: System.get_env("PGDATABASE_ES"),
-  hostname: System.get_env("PGHOST"),
-  port: System.get_env("PGPORT"),
+  username: "postgres",
+  password: "postgres",
+  database: "bankchallenge_es",
+  hostname: "db",
+  port: 5432,
   pool_size: 10

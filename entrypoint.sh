@@ -4,13 +4,13 @@
 service ssh start
 
 # Wait until Postgres is ready
-while ! pg_isready -q -h $PGHOST -p $PGPORT -U $PGUSER
+while ! pg_isready -q -h db -p 5432 -U postgres
 do
   sleep 2
 done
 
 # Create, migrate, and seed database if it doesn't exist.
-if [[ -z `psql -Atqc "\\list $PGDATABASE"` ]]; then
+if [[ -z `psql -Atqc "\\list bankchallenge"` ]]; then
   mix ecto.create
   mix ecto.migrate
   mix run priv/repo/seeds.exs
