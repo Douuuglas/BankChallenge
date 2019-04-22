@@ -11,12 +11,7 @@ done
 
 # Create, migrate, and seed database if it doesn't exist.
 if [[ -z `psql -Atqc "\\list $PGDATABASE"` ]]; then
-  mix ecto.create
-  mix ecto.migrate
-  mix run priv/repo/seeds.exs
-  mix event_store.create
-  mix event_store.init
+  mix ecto.create && mix ecto.migrate && mix run priv/repo/seeds.exs && mix event_store.create && mix event_store.init
 fi
 
-mix ecto.migrate
-mix phx.server
+mix ecto.migrate && mix phx.server
