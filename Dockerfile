@@ -3,10 +3,17 @@
 # Extend from the official Elixir image
 FROM elixir:latest
 
-ENV MIX_ENV=prod
+ENV MIX_ENV=prod \
+  SSH_PASSWD="root:Docker!"
 
-RUN apt-get update && \
-  apt-get install -y postgresql-client
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends dialog \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends openssh-server \
+    && echo "$SSH_PASSWD" | chpasswd \
+    && apt-get install -y postgresql-client
+
+COPY sshd_config /etc/ssh/
 
 # Create app directory and copy the Elixir projects into it
 RUN mkdir /app
@@ -23,6 +30,9 @@ RUN mix deps.get
 
 # Compile the project
 RUN mix do compile
+
+EXPOSE 2222
+EXPOSE 4000
 
 RUN chmod +x /app/entrypoint.sh
 
