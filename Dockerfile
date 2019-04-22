@@ -19,6 +19,8 @@ RUN mix local.hex --force
 
 RUN mix do local.rebar --force
 
+RUN mix deps.get
+
 # Compile the project
 RUN mix do compile
 
