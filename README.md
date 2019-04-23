@@ -24,7 +24,6 @@ Clonar o repositório:
 ```
 
 Criar o BD e migrations:
-
 ```
 > mix ecto.create
 > mix ecto.migrate
@@ -35,6 +34,18 @@ Inicializar a Event Store:
 ```
 > mix event_store.create
 > mix event_store.init
+```
+
+Executar os testes:
+
+```
+> mix test
+```
+
+Iniciar a aplicação:
+
+```
+> mix phx.server
 ```
 
 Executar os testes:
