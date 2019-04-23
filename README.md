@@ -5,42 +5,52 @@ No arquivo ['desafio-stone-bank.postman_collection.json'](https://github.com/Dou
 
 ## Requerimento/Dependências
 Principais:
-- ['Elixir 1.8.1'](https://elixir-lang.org/)
-- ['Postgres 9.6'](https://www.postgresql.org/)
-- ['phoenix 1.4.2'](https://phoenixframework.org/)
-- ['commanded 0.18'](https://hexdocs.pm/commanded/Commanded.html)
-- ['eventstore 0.16'](https://hexdocs.pm/eventstore/EventStore.html)
-- ['elixir_uuid 1.2'](https://hexdocs.pm/elixir_uuid/readme.html)
-- ['guardian 1.2'](https://hexdocs.pm/guardian/introduction-overview.html)
+- [Elixir 1.8.1](https://elixir-lang.org/)
+- [Postgres 9.6](https://www.postgresql.org/)
+- [phoenix 1.4.2](https://phoenixframework.org/)
+- [commanded 0.18](https://hexdocs.pm/commanded/Commanded.html)
+- [eventstore 0.16](https://hexdocs.pm/eventstore/EventStore.html)
+- [elixir_uuid 1.2](https://hexdocs.pm/elixir_uuid/readme.html)
+- [guardian 1.2](https://hexdocs.pm/guardian/introduction-overview.html)
 
 Mais em mix.ex (deps).
 
 ## Como Começar
 Clonar o repositório:
 
+```
 > git clone https://github.com/Douuuglas/desafio-stone-bank.git
 > cd "desafio-stone-bank"
+```
 
 Criar o BD e migrations:
 
+```
 > mix ecto.create
 > mix ecto.migrate
+```
 
 Inicializar a Event Store:
 
+```
 > mix event_store.create
-> mix event_store.init"
+> mix event_store.init
+```
 
 Executar os testes:
 
+```
 > mix test
+```
 
 Iniciar a aplicação:
 
+```
 > mix phx.server
+```
 
-## Lançamentos Principais
-Done:
+## Objetivos
+Alcançados:
  - Saque e transferencia entre contas;
  - Cadastro e ao completar o cadastro ele recebe R$ 1000,00;
  - Envio de e-mail durante o saque;
@@ -48,17 +58,17 @@ Done:
  - Docker;
  - EventSourcing.
 
-Pending:
+Pendentes:
  - Ampliar os testes;
  - Relatório no backoffice que dê o total transacionado (R$) por dia, mês, ano e total está incompleto;
- - Sistema rodando na nuvem e CI: todo push no git inicia um build no ['docker/douuuglas/desafio-stone-bank'](https://cloud.docker.com/u/douuuglas/repository/docker/douuuglas/desafio-stone-bank) e publica no Azure Web Apps via Webhook, no endereço ['https://desafiostone.azurewebsites.net/api/'](https://desafiostone.azurewebsites.net/), porém não consigo fazer o container rodar no Azure de jeito nenhum :(
- - Monitoramento de logs e falhas no sistema;
+ - Sistema rodando na nuvem e CI: todo push no git inicia um build no [docker/douuuglas/desafio-stone-bank](https://cloud.docker.com/u/douuuglas/repository/docker/douuuglas/desafio-stone-bank) e publica no Azure Web Apps via Webhook, no endereço [https://desafiostone.azurewebsites.net/api/](https://desafiostone.azurewebsites.net/), porém não consigo fazer o container rodar no Azure de jeito nenhum :(
+ - Monitoramento de logs e falhas no sistema.
 
 ## Créditos
 Não foi fácil chegar até aqui... muitas palestras assistidas e muita documentção lida!
 Algumas:
-- ['CQRS/ES com Elixir, Bernardo Amorim'](https://pt-br.eventials.com/locaweb/cqrs-es-com-elixir-com-bernardo-amorim/)
-- ['Event Sourcing With Elixir, Bruno Antunes'](https://blog.nootch.net/post/event-sourcing-with-elixir-part-1/)
-- ['Building Conduit'](https://leanpub.com/buildingconduit/read)
-- ['CQRS and Event Sourcing, Bernardo Amorim'](https://www.youtube.com/watch?v=S3f6sAXa3-c)
-- ['Building a CQRS/ES web application in Elixir using Phoenix'](https://10consulting.com/2017/01/04/building-a-cqrs-web-application-in-elixir-using-phoenix/)
+- [CQRS/ES com Elixir, Bernardo Amorim](https://pt-br.eventials.com/locaweb/cqrs-es-com-elixir-com-bernardo-amorim/)
+- [Event Sourcing With Elixir, Bruno Antunes](https://blog.nootch.net/post/event-sourcing-with-elixir-part-1/)
+- [Building Conduit](https://leanpub.com/buildingconduit/read)
+- [CQRS and Event Sourcing, Bernardo Amorim](https://www.youtube.com/watch?v=S3f6sAXa3-c)
+- [Building a CQRS/ES web application in Elixir using Phoenix](https://10consulting.com/2017/01/04/building-a-cqrs-web-application-in-elixir-using-phoenix/)
