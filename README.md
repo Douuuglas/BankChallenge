@@ -1,7 +1,7 @@
 # Apresentação da Aplicação
-Essa aplicação é baseada no ['desafio proposto pela Stone!'](https://gist.github.com/bamorim/39f7ec5ba2c5beff6ff0227a4e6308ca)
+Essa aplicação é baseada no [desafio proposto pela Stone!](https://gist.github.com/bamorim/39f7ec5ba2c5beff6ff0227a4e6308ca)
 
-No arquivo ['desafio-stone-bank.postman_collection.json'](https://github.com/Douuuglas/desafio-stone-bank/blob/master/desafio-stone-bank.postman_collection.json.postman_collection.json) existe uma collection do postman pra testar o app :D
+No arquivo [desafio-stone-bank.postman_collection.json](https://github.com/Douuuglas/desafio-stone-bank/blob/master/desafio-stone-bank.postman_collection.json.postman_collection.json) existe uma collection do postman pra testar o app :D
 
 ## Requerimento/Dependências
 Principais:
@@ -24,7 +24,6 @@ Clonar o repositório:
 ```
 
 Criar o BD e migrations:
-
 ```
 > mix ecto.create
 > mix ecto.migrate
@@ -35,6 +34,18 @@ Inicializar a Event Store:
 ```
 > mix event_store.create
 > mix event_store.init
+```
+
+Executar os testes:
+
+```
+> mix test
+```
+
+Iniciar a aplicação:
+
+```
+> mix phx.server
 ```
 
 Executar os testes:
