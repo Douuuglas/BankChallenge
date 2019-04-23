@@ -1,0 +1,278 @@
+{
+	"info": {
+		"_postman_id": "eb7b780e-c59f-405e-a296-3d46d5dc6daa",
+		"name": "BankChallenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Cadastrar conta",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"account\":{\n\t\"username\": \"aline\",\n    \"email\": \"aline@gmail.com\",\n    \"password\": \"senha\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mostrar conta cadastrada",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/account/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"account",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mostrar todas as contas",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/accounts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"accounts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Depositar valor na conta",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"add_funds\":{\n\t\"account_number\": \"dbd73e29-ebf7-439e-a3eb-96d86ba5117e\",\n    \"amount\": 10\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/account/add_funds",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"account",
+						"add_funds"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retirar valor da conta",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"remove_funds\":{\n\t\"account_number\": \"658e402a-9581-4c49-a5a3-2d1ac81ae1aa\",\n    \"amount\": -10\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/account/remove_funds",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"account",
+						"remove_funds"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transferir valor de uma conta para outra",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"remove_funds\":{\n\t\"account_number\": \"21b823bc-2472-4ee9-ba9b-1e0fe8172577\",\n    \"amount\": -100\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/account/remove_funds",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"account",
+						"remove_funds"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"account\": {\n        \"username\": \"aline\",\n        \"password\": \"senha\"\n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/accounts/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"accounts",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Extrato da conta",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/account/report",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"account",
+						"report"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
