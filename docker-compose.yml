@@ -5,24 +5,11 @@ services:
     build:
       context: .
     environment:
-      PGUSER: postgres
-      PGPASSWORD: postgres
+      PGUSER: postgres@desafiostonebd
+      PGPASSWORD: DesafioStone1
       PGDATABASE: bankchallenge
       PGDATABASE_ES: bankchallenge_es
       PGPORT: 5432
-      PGHOST: db
+      PGHOST: desafiostonebd.postgres.database.azure.com
     ports:
-      - 4000:4000
-    depends_on:
-      - db
-  db:
-    image: postgres:9.6
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      PGDATA: /var/lib/postgresql/data/pgdata
-    restart: always
-    volumes:
-      - pgdata:/var/lib/postgresql/data/pgdata
-volumes:
-  pgdata:
+      - 80:4000

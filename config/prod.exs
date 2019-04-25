@@ -72,7 +72,10 @@ config :bankchallenge, BankChallenge.Repo,
   database: System.get_env("PGDATABASE"),
   hostname: System.get_env("PGHOST"),
   port: System.get_env("PGPORT"),
-  pool_size: 10
+  pool_size: 10,
+  timeout: 120_000,
+  queue_target: 5000,
+  queue_interval: 100_000
 
 # Configuração de BD da EventStore
 config :eventstore, EventStore.Storage,
@@ -82,4 +85,7 @@ config :eventstore, EventStore.Storage,
   database: System.get_env("PGDATABASE_ES"),
   hostname: System.get_env("PGHOST"),
   port: System.get_env("PGPORT"),
-  pool_size: 10
+  pool_size: 10,
+  timeout: 120_000,
+  queue_target: 5000,
+  queue_interval: 100_000

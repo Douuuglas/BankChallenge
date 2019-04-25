@@ -3,8 +3,11 @@
 # Extend from the official Elixir image
 FROM elixir:latest
 
+MAINTAINER Douglas Moura <douuuglas@gmail.com>
+
 ENV MIX_ENV=prod \
-  SSH_PASSWD="root:Docker!"
+  SSH_PASSWD="root:Docker!" \
+  HEX_HTTP_TIMEOUT=1200
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends dialog \
@@ -36,4 +39,4 @@ EXPOSE 4000
 
 RUN chmod +x /app/entrypoint.sh
 
-CMD ["/app/entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
