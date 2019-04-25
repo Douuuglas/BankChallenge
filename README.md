@@ -67,12 +67,13 @@ Alcançados:
  - Envio de e-mail durante o saque;
  - Autenticação para realizar qualquer operação;
  - Docker;
- - EventSourcing.
+ - EventSourcing;
+ - Sistema rodando na nuvem: https://desafiostone.azurewebsites.net/api/;
+ - CI: todo push no git inicia um build no [docker/douuuglas/desafio-stone-bank](https://cloud.docker.com/u/douuuglas/repository/docker/douuuglas/desafio-stone-bank) e publica no Azure Web Apps via Webhook.
 
 Pendentes:
  - Ampliar os testes;
  - Relatório no backoffice que dê o total transacionado (R$) por dia, mês, ano e total está incompleto;
- - Sistema rodando na nuvem e CI: todo push no git inicia um build no [docker/douuuglas/desafio-stone-bank](https://cloud.docker.com/u/douuuglas/repository/docker/douuuglas/desafio-stone-bank) e publica no Azure Web Apps via Webhook, no endereço [https://desafiostone.azurewebsites.net/api/](https://desafiostone.azurewebsites.net/), porém não consigo fazer o container rodar no Azure de jeito nenhum :(
  - Monitoramento de logs e falhas no sistema.
 
 ## Créditos
@@ -83,3 +84,4 @@ Algumas:
 - [Building Conduit](https://leanpub.com/buildingconduit/read)
 - [CQRS and Event Sourcing, Bernardo Amorim](https://www.youtube.com/watch?v=S3f6sAXa3-c)
 - [Building a CQRS/ES web application in Elixir using Phoenix](https://10consulting.com/2017/01/04/building-a-cqrs-web-application-in-elixir-using-phoenix/)
+- [GOTO 2014 Event Sourcing Greg Young](https://www.youtube.com/watch?v=8JKjvY4etTY)
